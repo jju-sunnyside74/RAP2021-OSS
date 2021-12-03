@@ -227,7 +227,7 @@ class Env(tk.Tk):
 		# if RT60 = 1.6 이면 reward = 1000, circle위치 변경
 				RT60 = a_param.RT60[0][0]
 				# if RT60 >= std_RT:
-				if (RT60 >= std_RT) and ( ( (RT60-std_RT)/std_RT ) < 0.001 ) :  # 시간오차 0.1% 이내
+				if (RT60 >= std_RT) and ( ( (RT60-std_RT)/std_RT ) < 0.005 ) :  # 시간오차 0.5% 이내
 					done = True
 				else:
 					reward = +1
@@ -250,7 +250,7 @@ class Env(tk.Tk):
 				RT60 = a_param.RT60[0][0]
 				# if RT60 = 1.6 이면 reward = 1000, circle위치 변경
 				# if RT60 >= std_RT:
-				if (RT60 >= std_RT) and ( ( (RT60-std_RT)/std_RT ) < 0.001 ) :  # 시간오차 0.1% 이내
+				if (RT60 >= std_RT) and ( ( (RT60-std_RT)/std_RT ) < 0.005 ) :  # 시간오차 0.5% 이내
 					done = True
 				else:
 					reward = +2
@@ -272,7 +272,7 @@ class Env(tk.Tk):
 				RT60 = a_param.RT60[0][0]
 				# if RT60 = 1.6 이면 reward = 1000, circle위치 변경
 				# if RT60 >= std_RT:
-				if (RT60 >= std_RT) and ( ( (RT60-std_RT)/std_RT ) < 0.001 ) :  # 시간오차 0.1% 이내
+				if (RT60 >= std_RT) and ( ( (RT60-std_RT)/std_RT ) < 0.005 ) :  # 시간오차 0.5% 이내
 					done = True
 				else:
 					reward = +5
@@ -294,7 +294,7 @@ class Env(tk.Tk):
 				RT60 = a_param.RT60[0][0]
 				# if RT60 = 1.6 이면 reward = 1000, circle위치 변경
 				# if RT60 >= std_RT:
-				if (RT60 >= std_RT) and ( ( (RT60-std_RT)/std_RT ) < 0.001 ) :  # 시간오차 0.1% 이내
+				if (RT60 >= std_RT) and ( ( (RT60-std_RT)/std_RT ) < 0.005 ) :  # 시간오차 0.5% 이내
 					done = True
 				else:
 					reward = +10
