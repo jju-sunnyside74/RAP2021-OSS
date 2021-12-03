@@ -1,7 +1,13 @@
 {
 	"folders": [
 		{
-			"path": "."
+			"path": "DeepLearning"
+		},
+		{
+			"path": "img"
+		},
+		{
+			"path": "PyOssRoom_master"
 		}
 	]
 }

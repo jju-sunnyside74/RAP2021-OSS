@@ -21,12 +21,15 @@ import pyRoomAcoustic as room
 #%matplotlib tk
 
 # 한글 폰트 사용을 위해서 세팅
-from matplotlib import font_manager, rc
-font_path = "C:/Windows/Fonts/NGULIM.TTF"
-font = font_manager.FontProperties(fname=font_path).get_name()
-rc('font', family=font)
+# from matplotlib import font_manager, rc
+# font_path = "C:/Windows/Fonts/NGULIM.TTF"
+# font = font_manager.FontProperties(fname=font_path).get_name()
+# rc('font', family=font)
 
-def dPlotAudio(audio_fs, data_plot, y_range=1.0, title_txt="title", label_txt="label", xl_txt="x", yl_txt="y"):
+plt.rc('font', family='Monaco')			# 한글폰트 사용
+
+
+def dPlotAudio(audio_fs, data_plot, y_range=1.0, title_txt="title", label_txt="label", xl_txt="x", yl_txt="y", newWindow=False):
 	"""
     plot audio array using matplot for debug
 
@@ -46,6 +49,9 @@ def dPlotAudio(audio_fs, data_plot, y_range=1.0, title_txt="title", label_txt="l
 	end_time = data_plot.shape[0] / audio_fs	# fs: audio_fmt_chunk[3]
 
 	plot_time = np.linspace(start_time, end_time, data_plot.shape[0])
+
+	if newWindow == True:
+		plt.figure()
 	plt.title(title_txt)
 	fig = plt.plot(plot_time, data_plot, label=label_txt)
 	plt.legend()
@@ -59,8 +65,7 @@ def dPlotAudio(audio_fs, data_plot, y_range=1.0, title_txt="title", label_txt="l
 	# plt.close()
 	plt.show(block=True)
 
-
-def dPlotDecay(audio_fs, data_plot, title_txt="title", label_txt="label", xl_txt="x", yl_txt="y"):
+def dPlotDecay(audio_fs, data_plot, title_txt="title", label_txt="label", xl_txt="x", yl_txt="y", newWindow=False):
 	"""
     plot audio array using matplot for debug
 
@@ -80,6 +85,9 @@ def dPlotDecay(audio_fs, data_plot, title_txt="title", label_txt="label", xl_txt
 	end_time = data_plot.shape[0] / audio_fs	# fs: audio_fmt_chunk[3]
 
 	plot_time = np.linspace(start_time, end_time, data_plot.shape[0])
+
+	if newWindow == True:
+		plt.figure()
 	plt.title(title_txt)
 	fig = plt.plot(plot_time, data_plot, label=label_txt)
 	plt.legend()
@@ -91,6 +99,7 @@ def dPlotDecay(audio_fs, data_plot, title_txt="title", label_txt="label", xl_txt
 	plt.show(block=False)
 	plt.pause(2)
 	plt.close()
+
 
 
 def dPrintFunc(func_name, dText, dData):
@@ -169,3 +178,73 @@ def dPrintAParam(CAcousticParam):
 	print( " - Decay Time -5 ~ -35dB = ", CAcousticParam.RT60[0][0]/4)	# for Debug
 	# print( " - T20 = ", CAcousticParam.T20[0][0])         			# for Debug
 	# print( " - T30 = ", CAcousticParam.T30[0][0]/2)         			# for Debug
+
+
+def dSavePlotAudio(audio_fs, data_plot, y_range=1.0, title_txt="title", label_txt="label", xl_txt="x", yl_txt="y", newWindow=False, directory='./'):
+	"""
+    plot audio array using matplot for debug
+
+    Parameters
+    ----------
+	audio_fs: samplig frequency of audio file from audio fromat chunk
+    data_plot : data for plot
+	title_txt : , optional
+	label_txt : , optional
+	xl_txt : , optional
+	yl_txt : , optional
+
+    Returns
+    -------
+	"""
+	start_time = 0.
+	end_time = data_plot.shape[0] / audio_fs	# fs: audio_fmt_chunk[3]
+
+	plot_time = np.linspace(start_time, end_time, data_plot.shape[0])
+
+	if newWindow == True:
+		plt.figure()
+	plt.title(title_txt)
+	fig = plt.plot(plot_time, data_plot, label=label_txt)
+	plt.legend()
+	plt.xlabel(xl_txt)
+	plt.ylabel(yl_txt)
+	plt.xlim(0, end_time)
+	plt.ylim(-y_range, y_range)
+
+	# plt.show()
+	plt.savefig(directory + '/' + title_txt + '_' + label_txt + '.png', dpi=150)
+
+
+def dSavePlotDecay(audio_fs, data_plot, title_txt="title", label_txt="label", xl_txt="x", yl_txt="y", newWindow=False, directory='./'):
+	"""
+    plot audio array using matplot for debug
+
+    Parameters
+    ----------
+	audio_fs: samplig frequency of audio file from audio fromat chunk
+    data_plot : data for plot
+	title_txt : , optional
+	label_txt : , optional
+	xl_txt : , optional
+	yl_txt : , optional
+
+    Returns
+    -------
+	"""
+	start_time = 0.
+	end_time = data_plot.shape[0] / audio_fs	# fs: audio_fmt_chunk[3]
+
+	plot_time = np.linspace(start_time, end_time, data_plot.shape[0])
+
+	if newWindow == True:
+		plt.figure()
+	plt.title(title_txt)
+	fig = plt.plot(plot_time, data_plot, label=label_txt)
+	plt.legend()
+	plt.xlabel(xl_txt)
+	plt.ylabel(yl_txt)
+	plt.xlim(0, end_time)
+	plt.ylim(-60, 0)
+	
+	# plt.show()
+	plt.savefig(directory + '/' + title_txt + '_' + label_txt + '.png', dpi=150)

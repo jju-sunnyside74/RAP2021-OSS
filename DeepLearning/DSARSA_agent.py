@@ -261,6 +261,7 @@ if __name__ == "__main__":
 
 			if t_imp < init_RT60 + input_RT:
 				t_temp = init_RT60 + input_RT - t_imp 
+				# t_temp = input_RT 
 				data_imp = pyOssWavfile.insertSilence(data_imp, fs, t_temp)
 				#print(data_w.shape[0] / st_fmt_w.fs)
 				print("input_RT보다 임펄스가 작을 때 변경된 임펄스 크기... ", data_imp.shape[0]/fs)
@@ -316,10 +317,10 @@ if __name__ == "__main__":
 
 			#for e in range(EPISODES):    # 1000
 			for e in range(1):    # 1000, 1
-				data_learn  = init_data
-				decay       = init_decay
-				a_param     = init_a_param
-				c_param     = init_c_param
+				data_learn	= init_data
+				decay		= init_decay
+				a_param		= init_a_param
+				c_param		= init_c_param
 
 				done = False
 				score = 0
@@ -341,7 +342,12 @@ if __name__ == "__main__":
 					action = agent.get_action(state)
 
 					# 선택한 행동으로 환경에서 한 타임스텝 진행 후 샘플 수집
-					next_state, reward, done, c_param, data_learn, a_param, st_fmt_w_fs = \
+					# next_state, reward, done, c_param, data_learn, a_param, decay_learn = \
+					# 		env.step(action, c_param=c_param, data=data_learn,
+					# 				tgt_rt60=tgt_rt60, a_param=a_param,
+					# 				fs=fs)
+
+					next_state, reward, done, c_param, data_learn, a_param, decay_learn, gain_slope = \
 							env.step(action, c_param=c_param, data=data_learn,
 									tgt_rt60=tgt_rt60, a_param=a_param,
 									fs=fs)
@@ -360,7 +366,7 @@ if __name__ == "__main__":
 					a_param_RT60 = a_param.RT60[0][0]
 
 					# if (a_param_RT60 >= tgt_rt60) or done:
-					if ( (a_param_RT60 >= tgt_rt60) and ( (a_param_RT60-tgt_rt60)/tgt_rt60 < 0.01 ) ) or done:
+					if ( (a_param_RT60 >= tgt_rt60) and ( (a_param_RT60-tgt_rt60)/tgt_rt60 < 0.001 ) ) or done:
 						# 에피소드마다 학습 결과 출력
 						scores.append(score)
 						episodes.append(e)
@@ -406,7 +412,16 @@ if __name__ == "__main__":
 			# dbg.dPlotAudio(fs, gain_slope)
 			# dbg.dPlotAudio(fs, data_learn, title_txt=trans_name, label_txt=str(a_param_RT60), xl_txt='Time(sec)', yl_txt='Amplitude' )
 			# dbg.dPlotDecay(fs, decay, ' decay curve of ' + trans_name, label_txt=str(a_param_RT60), xl_txt='Time(sec)', yl_txt='Amplitude' )
+			dbg.dSavePlotAudio(fs, data_learn, title_txt=trans_name, label_txt='RT60='+str(a_param_RT60), \
+								xl_txt='Time(sec)', yl_txt='Amplitude', newWindow=True, directory='./'+result_dir )
+			dbg.dSavePlotDecay(fs, decay_learn, title_txt=imp_name + '_Decay' , label_txt='RT60='+str(a_param_RT60), \
+								xl_txt='Time(sec)', yl_txt='Amplitude', newWindow=True, directory='./'+result_dir )
+			dbg.dSavePlotAudio(fs, gain_slope, y_range=1.6, title_txt=trans_name+'_slope', label_txt='RT60='+str(a_param_RT60), \
+					xl_txt='Time(sec)', yl_txt='Amplitude', newWindow=True, directory='./'+result_dir)
 
+			dB_slope = librosa.amplitude_to_db(gain_slope)
+			dbg.dPlotAudio(fs, dB_slope, y_range=10, title_txt=trans_name, label_txt=str(a_param_RT60), xl_txt='Time(sec)', yl_txt='Amplitude', newWindow=True )
+			
 			# Convolution
 			# data_convolve_learned = sig.fftconvolve(data_aud, data_learn, mode="valid")
 			data_convolve_learned = sig.oaconvolve(data_aud, data_learn, mode="full")
@@ -415,13 +430,13 @@ if __name__ == "__main__":
 			if STAT_SAVE_RESULT == True:
 				imp_learn_fname = imp_name + '-' + str(init_RT60) + '-' + str(a_param_RT60)
 				sname_imp_learn = pyOssWavfile.str_fname(result_dir, imp_learn_fname)
-				pyOssWavfile.write(sname_imp_learn, fs, data_learn)
+				pyOssWavfile.write( sname_imp_learn, fs, pyOssWavfile.normalize(data_learn) )
 				print('* Save complete learned impulse data')
 
 			# Save Learning Processed Wav File
 			if STAT_SAVE_RESULT == True:
 				sname_trans = pyOssWavfile.str_fname(result_dir, aud_name + '.trans.' + trans_name)
-				pyOssWavfile.write(sname_trans, fs, pyOssWavfile.normalize(data_convolve_learned))
+				pyOssWavfile.write( sname_trans, fs, pyOssWavfile.normalize(data_convolve_learned) )
 				print('* Save complete convolution data trans')
 			print('**************************************************')
 			print('                Process Finished.')

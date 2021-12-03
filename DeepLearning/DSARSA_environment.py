@@ -61,9 +61,6 @@ def calculate_RT60(slope_VAL=0.15, c_param=None, data_in=None, tgt_rt60=None, a_
 		gain_slope = np.append( gain_slope_a, gain_slope_b)
 		gain_slope = np.append( gain_slope, gain_slope_c)
 		gain_slope = np.append( gain_slope, gain_slope_d)
-		data_temp = data_in * gain_slope
-		data_out, decay, a_param, c_param  = \
-			learn.learning_decay(data_temp, fs)
 
 	else:
 		# case 5
@@ -76,14 +73,17 @@ def calculate_RT60(slope_VAL=0.15, c_param=None, data_in=None, tgt_rt60=None, a_
 		gain_slope = np.append( gain_slope_a, gain_slope_b)
 		gain_slope = np.append( gain_slope, gain_slope_c)
 		gain_slope = np.append( gain_slope, gain_slope_d)
-		data_temp = data_in * gain_slope
-		data_out, decay, a_param, c_param  = \
-			learn.learning_decay(data_temp, fs)
+
+	data_temp = data_in * gain_slope
+	data_out, decay_out, a_param, c_param  = \
+							learn.learning_decay(data_temp, fs)
 
 	# dbg.dPlotAudio(fs, gain_slope, y_range=1.6, title_txt='gain slope', label_txt='gain slope', \
 	# 		xl_txt='Time(sec)', yl_txt='Amplitude' )
+	# dbg.dSavePlotAudio(fs, gain_slope, y_range=1.6, title_txt='gain slope', label_txt='gain slope', \
+	# 		xl_txt='Time(sec)', yl_txt='Amplitude', newWindow=True, directory='./save_graph')
 
-	return c_param, data_out, a_param, fs
+	return c_param, data_out, a_param, decay_out, gain_slope
 
 class Env(tk.Tk):
 
@@ -205,6 +205,9 @@ class Env(tk.Tk):
 
 		std_RT = tgt_rt60
 
+		decay = np.zeros(0)
+		gain_slope = np.zeros(0)
+
 		'''
 		# RT60 계산
 		#
@@ -215,7 +218,7 @@ class Env(tk.Tk):
 			if state[1] > UNIT:
 				base_action[1] -= UNIT
 				slope_VAL = 0.01        #1.1
-				c_param, data, a_param, st_fmt_w_fs = \
+				c_param, data, a_param, decay, gain_slope = \
 					calculate_RT60(slope_VAL=slope_VAL,
 									c_param=c_param, data_in=data,
 									tgt_rt60=tgt_rt60,
@@ -236,7 +239,7 @@ class Env(tk.Tk):
 			if state[1] < (HEIGHT - 1) * UNIT:
 				base_action[1] += UNIT
 				slope_VAL = 0.02      #1.2
-				c_param, data, a_param, st_fmt_w_fs = \
+				c_param, data, a_param, decay, gain_slope = \
 					calculate_RT60(slope_VAL=slope_VAL,
 									c_param=c_param, data_in=data,
 									tgt_rt60=tgt_rt60,
@@ -258,7 +261,7 @@ class Env(tk.Tk):
 			if state[0] > UNIT:
 				base_action[0] -= UNIT
 				slope_VAL = 0.03         #1.3
-				c_param, data, a_param, st_fmt_w_fs = \
+				c_param, data, a_param, decay, gain_slope = \
 					calculate_RT60(slope_VAL=slope_VAL,
 									c_param=c_param, data_in=data,
 									tgt_rt60=tgt_rt60,
@@ -280,7 +283,7 @@ class Env(tk.Tk):
 			if state[0] < (WIDTH - 1) * UNIT:
 				base_action[0] += UNIT
 				slope_VAL = 0.04      #1.4
-				c_param, data, a_param, st_fmt_w_fs = \
+				c_param, data, a_param, decay, gain_slope = \
 					calculate_RT60(slope_VAL=slope_VAL,
 									c_param=c_param, data_in=data,
 									tgt_rt60=tgt_rt60,
@@ -319,7 +322,7 @@ class Env(tk.Tk):
 		if done:
 			print("... Done. next_state = ", next_state)
 		#print("decay : ",decay)
-		return next_state, reward, done, c_param, data, a_param, fs
+		return next_state, reward, done, c_param, data, a_param, decay, gain_slope
 
 	def render(self):
 		# time.sleep(0.03)
