@@ -416,12 +416,10 @@ if __name__ == "__main__":
 								xl_txt='Time(sec)', yl_txt='Amplitude', newWindow=True, directory='./'+result_dir )
 			dbg.dSavePlotDecay(fs, decay_learn, title_txt=imp_name + '_Decay' , label_txt='RT60='+str(a_param_RT60), \
 								xl_txt='Time(sec)', yl_txt='Amplitude', newWindow=True, directory='./'+result_dir )
-			dbg.dSavePlotAudio(fs, gain_slope, y_range=1.6, title_txt=trans_name+'_slope', label_txt='RT60='+str(a_param_RT60), \
-					xl_txt='Time(sec)', yl_txt='Amplitude', newWindow=True, directory='./'+result_dir)
-
-			dB_slope = librosa.amplitude_to_db(gain_slope)
-			dbg.dPlotAudio(fs, dB_slope, y_range=10, title_txt=trans_name, label_txt=str(a_param_RT60), xl_txt='Time(sec)', yl_txt='Amplitude', newWindow=True )
-			
+			dbg.dSavePlotAudio(fs, librosa.amplitude_to_db(gain_slope), y_range_min=0.0, y_range_max=3.0, \
+								title_txt=trans_name+'_slope', label_txt='RT60='+str(a_param_RT60), \
+								xl_txt='Time(sec)', yl_txt='Amplitude', newWindow=True, directory='./'+result_dir)
+		
 			# Convolution
 			# data_convolve_learned = sig.fftconvolve(data_aud, data_learn, mode="valid")
 			data_convolve_learned = sig.oaconvolve(data_aud, data_learn, mode="full")
@@ -430,13 +428,13 @@ if __name__ == "__main__":
 			if STAT_SAVE_RESULT == True:
 				imp_learn_fname = imp_name + '-' + str(init_RT60) + '-' + str(a_param_RT60)
 				sname_imp_learn = pyOssWavfile.str_fname(result_dir, imp_learn_fname)
-				pyOssWavfile.write( sname_imp_learn, fs, pyOssWavfile.normalize(data_learn) )
+				pyOssWavfile.write( sname_imp_learn, fs, np.float32( pyOssWavfile.normalize(data_learn) ) )
 				print('* Save complete learned impulse data')
 
 			# Save Learning Processed Wav File
 			if STAT_SAVE_RESULT == True:
 				sname_trans = pyOssWavfile.str_fname(result_dir, aud_name + '.trans.' + trans_name)
-				pyOssWavfile.write( sname_trans, fs, pyOssWavfile.normalize(data_convolve_learned) )
+				pyOssWavfile.write( sname_trans, fs, np.float32( pyOssWavfile.normalize(data_convolve_learned) ) )
 				print('* Save complete convolution data trans')
 			print('**************************************************')
 			print('                Process Finished.')
