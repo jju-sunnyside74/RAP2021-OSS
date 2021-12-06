@@ -427,7 +427,7 @@ def _definition(IR, fs, t=50):
     return D
 
 
-def calcAcousticParam( data, decayCurveNorm, fs, RT60 = False, printout=False, label_text='' ):
+def calcAcousticParam( data, decayCurveNorm, fs, use_rt60 = False, printout=False, label_text='' ):
 	"""	Calculation Acoustic Parameter Values & Print out
 
 	Parameters
@@ -447,7 +447,7 @@ def calcAcousticParam( data, decayCurveNorm, fs, RT60 = False, printout=False, l
 	data_EDT, nonLin_EDT = EDT(decayCurveNorm, fs)
 	data_t20, nonLin_t20 = T20(decayCurveNorm, fs)
 	data_t30, nonLin_t30 = T30(decayCurveNorm, fs)
-	if RT60 is True:
+	if use_rt60 is True:
 		data_t60, nonLin_t60 = RT60(decayCurveNorm, fs)
 	else:
 		data_t60 = data_t30
@@ -476,9 +476,9 @@ def calcAcousticParam( data, decayCurveNorm, fs, RT60 = False, printout=False, l
 
 class CAcousticParameter:
     def __init__(self, RT60, EDT, D50, C50, C80):
-        self.RT60 = RT60
+        self.RT60 = RT60[0][0]
 
-        self.EDT = EDT
+        self.EDT = EDT[0][0]
         self.D50 = D50
         self.C50 = C50
         self.C80 = C80

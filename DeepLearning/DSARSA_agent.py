@@ -230,7 +230,7 @@ if __name__ == "__main__":
 
 			# data_filt, decay, a_param, c_param = learn.learning_decay(False, data_imp, fs, fc, fname=impulse_fname)
 			data_tmp, decay, a_param, c_param = learn.learning_decay(data_imp, fs)
-			print("RT60 현재 값(초): ", a_param.RT60[0][0])
+			print("RT60 현재 값(초): ", a_param.RT60)
 
 			# 원래 audio 파일 그리기 & Parameter
 			#dbg.dPlotAudio(st_fmt_w.fs, data_filt, imp_fname + ' filtered - ORIGINAL ' + str(fc) + 'Hz', label_txt='',
@@ -257,7 +257,7 @@ if __name__ == "__main__":
 			ori_name = imp_fname
 
 			# 비교
-			init_RT60 = a_param.RT60[0][0]
+			init_RT60 = a_param.RT60
 
 			if t_imp < init_RT60 + input_RT:
 				t_temp = init_RT60 + input_RT - t_imp 
@@ -295,8 +295,8 @@ if __name__ == "__main__":
 			init_a_param = a_param
 			init_c_param = c_param
 			#init_a_param_RT60 = init_RT60
-			print(".......... RT60 init_a_param: ", init_a_param.RT60[0][0])
-			print(".......... EDT  init_a_param: ", init_a_param.EDT[0][0])
+			print(".......... RT60 init_a_param: ", init_a_param.RT60)
+			print(".......... EDT  init_a_param: ", init_a_param.EDT)
 			print(".......... D50  init_a_param: ", init_a_param.D50)
 			print(".......... C50  init_a_param: ", init_a_param.C50)
 			print(".......... C80  init_a_param: ", init_a_param.C80)
@@ -363,7 +363,7 @@ if __name__ == "__main__":
 
 					# Q-table 화면에 표시
 					# env.print_value_all(agent.q_table)
-					a_param_RT60 = a_param.RT60[0][0]
+					a_param_RT60 = a_param.RT60
 
 					# if (a_param_RT60 >= tgt_rt60) or done:
 					if ( (a_param_RT60 >= tgt_rt60) and ( (a_param_RT60-tgt_rt60)/tgt_rt60 < 0.001 ) ) or done:
@@ -443,8 +443,8 @@ if __name__ == "__main__":
 
 			# 불러온 임펄스 파일의 음향 파라미터 특성 출력
 			trans_a_param = a_param
-			excel_list.append([imp_name, input_RT, init_a_param.RT60[0][0],  trans_a_param.RT60[0][0],
-							init_a_param.EDT[0][0],  trans_a_param.EDT[0][0],
+			excel_list.append([imp_name, input_RT, init_a_param.RT60,  trans_a_param.RT60,
+							init_a_param.EDT,  trans_a_param.EDT,
 							init_a_param.D50, trans_a_param.D50,
 							init_a_param.C50, trans_a_param.C50,
 							init_a_param.C80, trans_a_param.C80])

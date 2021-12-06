@@ -47,9 +47,9 @@ def calculate_RT60(slope_VAL=0.15, c_param=None, data_in=None, tgt_rt60=None, a_
 	p_20dB = c_param.s_20dB
 	p_30dB = c_param.s_30dB
 
-	if a_param.RT60[0][0] > tgt_rt60:
+	if a_param.RT60 > tgt_rt60:
 		print(" Initial RT >= Target RT !!!")
-		print("      ", a_param.RT60[0][0])
+		print("      ", a_param.RT60)
 
 		# case 5
 		gain_slope_a = np.ones(p_0dB, dtype='f') # 시작점(0dB)까지
@@ -225,7 +225,7 @@ class Env(tk.Tk):
 									a_param=a_param,
 									fs=fs)
 		# if RT60 = 1.6 이면 reward = 1000, circle위치 변경
-				RT60 = a_param.RT60[0][0]
+				RT60 = a_param.RT60
 				# if RT60 >= std_RT:
 				if (RT60 >= std_RT) and ( ( (RT60-std_RT)/std_RT ) < 0.005 ) :  # 시간오차 0.5% 이내
 					done = True
@@ -247,7 +247,7 @@ class Env(tk.Tk):
 									fs=fs)
 
 				# if RT60 = 1.6 이면 reward = 1000, circle위치 변경
-				RT60 = a_param.RT60[0][0]
+				RT60 = a_param.RT60
 				# if RT60 = 1.6 이면 reward = 1000, circle위치 변경
 				# if RT60 >= std_RT:
 				if (RT60 >= std_RT) and ( ( (RT60-std_RT)/std_RT ) < 0.005 ) :  # 시간오차 0.5% 이내
@@ -269,7 +269,7 @@ class Env(tk.Tk):
 									fs=fs)
 
 				# if RT60 = 1.6 이면 reward = 1000, circle위치 변경
-				RT60 = a_param.RT60[0][0]
+				RT60 = a_param.RT60
 				# if RT60 = 1.6 이면 reward = 1000, circle위치 변경
 				# if RT60 >= std_RT:
 				if (RT60 >= std_RT) and ( ( (RT60-std_RT)/std_RT ) < 0.005 ) :  # 시간오차 0.5% 이내
@@ -291,7 +291,7 @@ class Env(tk.Tk):
 									fs=fs)
 
 				# if RT60 = 1.6 이면 reward = 1000, circle위치 변경
-				RT60 = a_param.RT60[0][0]
+				RT60 = a_param.RT60
 				# if RT60 = 1.6 이면 reward = 1000, circle위치 변경
 				# if RT60 >= std_RT:
 				if (RT60 >= std_RT) and ( ( (RT60-std_RT)/std_RT ) < 0.005 ) :  # 시간오차 0.5% 이내

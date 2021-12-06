@@ -346,19 +346,6 @@ if __name__ == "__main__":
     '''
 
 
-class CAcousticParameter:
-    def __init__(self, RT60, EDT, D50, C50, C80):
-        self.RT60 = RT60
-        self.EDT = EDT
-        self.D50 = D50
-        self.C50 = C50
-        self.C80 = C80
-
-class CAcousticParameter_tmp:
-    def __init__(self, RT60):
-        self.RT60 = RT60
-
-
 class CsampledBParameter:
     def __init__(self, s_0dB, s_10dB, s_20dB, s_30dB):
         self.s_0dB = s_0dB
