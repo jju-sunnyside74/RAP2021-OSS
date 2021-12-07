@@ -76,7 +76,7 @@ def calculate_RT60(slope_VAL=0.15, c_param=None, data_in=None, tgt_rt60=None, a_
 
 	data_temp = data_in * gain_slope
 	data_out, decay_out, a_param, c_param  = \
-							learn.learning_decay(data_temp, fs)
+							learn.learning_decay(data_temp, fs, tgt_rt=tgt_rt60)
 
 	# dbg.dPlotAudio(fs, gain_slope, y_range=1.6, title_txt='gain slope', label_txt='gain slope', \
 	# 		xl_txt='Time(sec)', yl_txt='Amplitude' )

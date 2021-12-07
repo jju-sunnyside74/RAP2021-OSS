@@ -416,7 +416,7 @@ if __name__ == "__main__":
 								xl_txt='Time(sec)', yl_txt='Amplitude', newWindow=True, directory='./'+result_dir )
 			dbg.dSavePlotDecay(fs, decay_learn, title_txt=imp_name + '_Decay' , label_txt='RT60='+str(a_param_RT60), \
 								xl_txt='Time(sec)', yl_txt='Amplitude', newWindow=True, directory='./'+result_dir )
-			dbg.dSavePlotAudio(fs, librosa.amplitude_to_db(gain_slope), y_range_min=0.0, y_range_max=3.0, \
+			dbg.dSavePlotAudio(fs, librosa.amplitude_to_db(gain_slope), y_range_min=-3.0, y_range_max=3.0, \
 								title_txt=trans_name+'_slope', label_txt='RT60='+str(a_param_RT60), \
 								xl_txt='Time(sec)', yl_txt='Amplitude', newWindow=True, directory='./'+result_dir)
 		

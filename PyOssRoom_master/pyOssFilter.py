@@ -146,17 +146,17 @@ def calc_filt_impulse(in_data, fs, fc, filt_type='butt', order_tab=2, RT60=False
     data_C80 = room.C80(data_filtered, fs)
     data_C50 = room.C50(data_filtered, fs)
 
-    Cacoustic_param = CAcousticParameter(data_t60, data_EDT, data_D50, data_C50, data_C80)
+    Cacoustic_param = room.CAcousticParameter(data_t60, data_EDT, data_D50, data_C50, data_C80)
 
     print("Impulse Name: " + fname + ", Filter: " + filter_name + ", " + str(fc) + "Hz" )
-    print("T10=", data_EDT/6)      # for Debug
-    print("T20=", data_t20)          # for Debug
-    print("T30=", data_t30)          # for Debug
+    print("0dB ~ -10dB =", data_EDT[0][0]/6)      # for Debug
+    print("-5dB ~ -25dB =", data_t20[0][0])          # for Debug
+    print("-5dB ~ -35dB =", data_t30[0][0])          # for Debug
     if RT60 is True:
-        print("RT60(Real)=", data_t60)            # for Debug
+        print("RT60(Real)=", data_t60[0][0])            # for Debug
     else:
-        print("RT60(from T30*2)=", data_t60)            # for Debug
-    print("EDT=", data_EDT)            # for Debug
+        print("RT60(from T30x2)=", data_t60[0][0])            # for Debug
+    print("EDT=", data_EDT[0][0])            # for Debug
     print("D50=", data_D50)         # for Debug
     print("C50=", data_C50)         # for Debug
     print("C80=", data_C80)         # for Debug
