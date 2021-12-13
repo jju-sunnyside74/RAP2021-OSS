@@ -244,7 +244,7 @@ def calc_filt_impulse_learning(draw_plot, in_data, fs, fc, filt_type='butt', ord
 
     # Cacoustic_param = CAcousticParameter(data_t60, data_EDT, data_D50, data_C50, data_C80)
 
-    Cacoustic_param = CAcousticParameter(data_t30*2)
+    Cacoustic_param = room.CAcousticParameter(data_t30*2)
     Csample_param   = CsampledBParameter(s_0dB, s_10dB, s_20dB, s_30dB)
 
     '''

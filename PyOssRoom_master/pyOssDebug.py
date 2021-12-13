@@ -26,7 +26,7 @@ import pyRoomAcoustic as room
 # font = font_manager.FontProperties(fname=font_path).get_name()
 # rc('font', family=font)
 
-plt.rc('font', family='Monaco')			# 한글폰트 사용
+plt.rc('font', family='Malgun Gothic')			# 한글폰트 사용
 
 
 def dPlotAudio(audio_fs, data_plot, y_range_min=-1.0, y_range_max=1.0, title_txt="title", label_txt="label", xl_txt="x", yl_txt="y", newWindow=False):
