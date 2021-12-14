@@ -269,7 +269,7 @@ if __name__ == "__main__":
 
 			# Save Original Wav File
 			if STAT_SAVE_RESULT == True:
-				sname_ori = pyOssWavfile.str_fname(result_dir, aud_name + '.ori.' + ori_name) # 파일경로 + 파일이름
+				sname_ori = pyOssWavfile.str_fname(result_dir, aud_name + '.ori.' + ori_name + '.RT60=' + str(init_RT60) ) # 파일경로 + 파일이름
 				pyOssWavfile.write(sname_ori, fs, pyOssWavfile.normalize(data_convolve_ori))    # 무향실 음원에 필터링 된 임펄스를 적용한 wav file 저장
 				print('* Save complete convolution data original')
 
@@ -412,13 +412,32 @@ if __name__ == "__main__":
 			# dbg.dPlotAudio(fs, gain_slope)
 			# dbg.dPlotAudio(fs, data_learn, title_txt=trans_name, label_txt=str(a_param_RT60), xl_txt='Time(sec)', yl_txt='Amplitude' )
 			# dbg.dPlotDecay(fs, decay, ' decay curve of ' + trans_name, label_txt=str(a_param_RT60), xl_txt='Time(sec)', yl_txt='Amplitude' )
-			dbg.dSavePlotAudio(fs, data_learn, title_txt=trans_name, label_txt='RT60='+str(a_param_RT60), \
-								xl_txt='Time(sec)', yl_txt='Amplitude', newWindow=True, directory='./'+result_dir )
-			dbg.dSavePlotDecay(fs, decay_learn, title_txt=imp_name + '_Decay' , label_txt='RT60='+str(a_param_RT60), \
-								xl_txt='Time(sec)', yl_txt='Amplitude', newWindow=True, directory='./'+result_dir )
-			dbg.dSavePlotAudio(fs, librosa.amplitude_to_db(gain_slope), y_range_min=-3.0, y_range_max=3.0, \
-								title_txt=trans_name+'_slope', label_txt='RT60='+str(a_param_RT60), \
-								xl_txt='Time(sec)', yl_txt='Amplitude', newWindow=True, directory='./'+result_dir)
+			dbg.dSavePlotAudio( fs, \
+								data_learn, \
+								title_txt = trans_name + '_waveform_' + str(init_RT60) + '_' + str(input_RT), \
+								label_txt = 'RT60=' + str(a_param_RT60), \
+								xl_txt = 'Time(sec)', \
+								yl_txt = 'Amplitude', \
+								newWindow = True, \
+								directory = './'+result_dir )
+			dbg.dSavePlotDecay( fs, \
+								decay_learn, \
+								title_txt = trans_name + '_Decay_' + str(init_RT60) + '_' + str(input_RT), \
+								label_txt = 'RT60='+str(a_param_RT60), \
+								xl_txt = 'Time(sec)', \
+								yl_txt = 'Amplitude(dB)', \
+								newWindow = True, \
+								directory = './'+result_dir )
+			dbg.dSavePlotAudio( fs, 
+								librosa.amplitude_to_db(gain_slope), \
+								y_range_min = -3.0, \
+								y_range_max = 3.0, \
+								title_txt = trans_name+'_slope_' + str(init_RT60) + '_' + str(input_RT), \
+								label_txt = 'RT60=' + str(a_param_RT60), \
+								xl_txt = 'Time(sec)', \
+								yl_txt = 'Amplitude(dB)', \
+								newWindow = True, \
+								directory = './'+result_dir)
 		
 			# Convolution
 			# data_convolve_learned = sig.fftconvolve(data_aud, data_learn, mode="valid")
@@ -426,14 +445,15 @@ if __name__ == "__main__":
 
 			# Save Learned Impulse
 			if STAT_SAVE_RESULT == True:
-				imp_learn_fname = imp_name + '-' + str(init_RT60) + '-' + str(a_param_RT60)
+				imp_learn_fname = imp_name + '-' + str(init_RT60) + '-' + str(input_RT) + '-' + str(a_param_RT60)
 				sname_imp_learn = pyOssWavfile.str_fname(result_dir, imp_learn_fname)
 				pyOssWavfile.write( sname_imp_learn, fs, np.float32( pyOssWavfile.normalize(data_learn) ) )
 				print('* Save complete learned impulse data')
 
 			# Save Learning Processed Wav File
 			if STAT_SAVE_RESULT == True:
-				sname_trans = pyOssWavfile.str_fname(result_dir, aud_name + '.trans.' + trans_name)
+				sname_trans = pyOssWavfile.str_fname(result_dir, \
+								aud_name + '.trans.' + trans_name + '-' + str(init_RT60) + '-' + str(input_RT) + '-' + str(a_param_RT60))
 				pyOssWavfile.write( sname_trans, fs, np.float32( pyOssWavfile.normalize(data_convolve_learned) ) )
 				print('* Save complete convolution data trans')
 			print('**************************************************')

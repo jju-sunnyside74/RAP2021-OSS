@@ -57,7 +57,9 @@ def calculate_RT60(slope_VAL=0.15, c_param=None, data_in=None, tgt_rt60=None, a_
 		gain_slope_c = np.logspace( -slope_VAL, -slope_VAL-0.1, num=( p_30dB-p_10dB ) )# -10dB ~ -30dB
 		# gain_slope_c = np.logspace( 0, -slope_VAL-0.01, num=( p_30dB-p_10dB ) )# -10dB ~ -30dB      (0.1->0.01)
 		# gain_slope_c = np.logspace( 0, -slope_VAL-0.001, num=( p_30dB-p_10dB ) )# -10dB ~ -30dB   (0.1->0.001)
-		gain_slope_d = np.ones((data_in.shape[0]-p_30dB), dtype='f') # (Reverberation)
+		# gain_slope_d = np.ones((data_in.shape[0]-p_30dB), dtype='f') # (Reverberation)
+		gain_slope_d = np.logspace( -slope_VAL-0.1, 0, num=( data_in.shape[0]-p_30dB ) )	# (Reverberation)
+
 		gain_slope = np.append( gain_slope_a, gain_slope_b)
 		gain_slope = np.append( gain_slope, gain_slope_c)
 		gain_slope = np.append( gain_slope, gain_slope_d)
@@ -69,7 +71,9 @@ def calculate_RT60(slope_VAL=0.15, c_param=None, data_in=None, tgt_rt60=None, a_
 		gain_slope_c = np.logspace( slope_VAL, slope_VAL+0.1, num=( p_30dB-p_10dB ) )# -10dB ~ -30dB
 		# gain_slope_c = np.logspace( 0, slope_VAL+0.01, num=( p_30dB-p_10dB ) )# -10dB ~ -30dB   (0.1->0.01)
 		# gain_slope_c = np.logspace( 0, slope_VAL+0.001, num=( p_30dB-p_10dB ) )# -10dB ~ -30dB   (0.1->0.001)
-		gain_slope_d = np.ones((data_in.shape[0]-p_30dB), dtype='f') # (Reverberation)
+		# gain_slope_d = np.ones((data_in.shape[0]-p_30dB), dtype='f') # (Reverberation)
+		gain_slope_d = np.logspace( slope_VAL+0.1, 0, num=( data_in.shape[0]-p_30dB ) )	# (Reverberation)
+
 		gain_slope = np.append( gain_slope_a, gain_slope_b)
 		gain_slope = np.append( gain_slope, gain_slope_c)
 		gain_slope = np.append( gain_slope, gain_slope_d)
